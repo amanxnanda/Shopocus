@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shopocus_task/hello_widget.dart';
+import 'package:shopocus_task/text_field_widget.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -28,7 +31,8 @@ Future<Map> checkUser(String email, String password) async {
     return responseMap;
   } else {
     print('sending null');
-    return null;
+
+    return {"message": "No_Connection"};
   }
 }
 
@@ -48,70 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             HelloWidget(),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.teal,
-                                width: 20.0,
-                                style: BorderStyle.solid,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
-                              gapPadding: 10.0),
-                          counterText: "",
-                          labelText: "email",
-                          labelStyle: TextStyle(
-                            color: Colors.amber,
-                            letterSpacing: 5.0,
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            size: 35.0,
-                            color: Colors.amber,
-                          ),
-                        ),
-                      ),
-                      TextField(
-                        controller: passwordController,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.teal,
-                                width: 20.0,
-                                style: BorderStyle.solid,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
-                              gapPadding: 10.0),
-                          counterText: "",
-                          labelText: "password",
-                          labelStyle: TextStyle(
-                            color: Colors.amber,
-                            letterSpacing: 5.0,
-                          ),
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            size: 35.0,
-                            color: Colors.amber,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            TextFieldWidget(emailController: emailController, passwordController: passwordController),
             Expanded(
               flex: 3,
               child: Container(
@@ -132,14 +73,36 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () async {
                             final String email = emailController.text;
                             final String password = passwordController.text;
+                            Map user;
+                            bool result =
+                                await DataConnectionChecker().hasConnection;
 
-                            final Map user = await checkUser(email, password);
+                            if (result) {
+                              user = await checkUser(email, password);
+                            } else {
+                              print('no internet connection');
+                              Flushbar(
+                                title: 'No Internet connection',
+                                message: 'No Internet connection',
+                                duration: Duration(seconds: 2),
+                              )..show(context);
+                            }
 
                             setState(() {
                               _user = user;
                             });
+
+                            if (_user['message'] == "loggedIn") {
+                              Navigator.pushReplacementNamed(
+                                  context, '/second');
+                            } else {
+                              Flushbar(
+                                // title: 'Incorrect email/Password',
+                                message: 'Incorrect email/Password',
+                                duration: Duration(seconds: 2),
+                              )..show(context);
+                            }
                             print(_user['message']);
-                            //Navigator.pushReplacementNamed(context, '/second');
                           },
                           color: Colors.white,
                           focusColor: Colors.transparent,
@@ -160,30 +123,3 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class HelloWidget extends StatelessWidget {
-  const HelloWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Hello',
-              style: TextStyle(
-                fontSize: 100.0,
-                color: Colors.amber,
-              ),
-            ),
-            Text('Sign in to your account'),
-          ],
-        ),
-      ),
-    );
-  }
-}

@@ -21,7 +21,10 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  animated_text_kit: ^3.1.0
+  flushbar: ^1.10.4
   font_awesome_flutter: ^8.11.0
+  data_connection_checker: ^0.3.4
   http: ^0.12.2
   flutter:
     sdk: flutter
@@ -62,10 +65,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Blauer
+      fonts:
+        - asset: assets/fonts/Blauer Regular.tttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
