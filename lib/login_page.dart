@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:shopocus_task/generic_model.dart';
-import 'package:shopocus_task/user_model.dart';
+
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -13,7 +12,7 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-Future checkUser(String email, String password) async {
+Future<Map> checkUser(String email, String password) async {
   final String apiURL =
       'https://ecommerce-calculator.herokuapp.com/api/MPC/login';
   final response = await http.post(
@@ -26,11 +25,7 @@ Future checkUser(String email, String password) async {
     final String responseStirng = response.body;
     final Map responseMap = jsonDecode(responseStirng);
     print(responseMap['message']);
-    if (responseMap['message'] == 'loggedIn') {
-      return userModelFromJson(responseStirng);
-    } else {
-      return genericModelFromJson(responseStirng);
-    }
+    return responseMap;
   } else {
     print('sending null');
     return null;
@@ -38,7 +33,7 @@ Future checkUser(String email, String password) async {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  UserModel _user;
+  Map _user;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -138,13 +133,12 @@ class _LoginPageState extends State<LoginPage> {
                             final String email = emailController.text;
                             final String password = passwordController.text;
 
-                            final UserModel user =
-                                await checkUser(email, password);
+                            final Map user = await checkUser(email, password);
 
                             setState(() {
                               _user = user;
                             });
-                            print(_user.message);
+                            print(_user['message']);
                             //Navigator.pushReplacementNamed(context, '/second');
                           },
                           color: Colors.white,
