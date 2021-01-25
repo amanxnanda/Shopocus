@@ -1,4 +1,7 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+
+import 'constants.dart';
 
 class HelloWidget extends StatelessWidget {
   const HelloWidget({
@@ -12,15 +15,22 @@ class HelloWidget extends StatelessWidget {
       child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Hello',
-              style: TextStyle(
-                fontSize: 100.0,
-                color: Colors.amber,
+            Container(
+              child: TyperAnimatedTextKit(
+                
+                text: ['SHOPOCUS'],
+                speed: Duration(milliseconds: 100),
+                textAlign: TextAlign.center,
+                textStyle: TextStyle(
+                  fontSize: 55.0,
+                  color: logoColor,
+                  fontFamily: 'Blauer',
+                ),
               ),
             ),
-            Text('Sign in to your account'),
+            //Text('Sign in to your account'),
           ],
         ),
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'constants.dart';
+
 class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({
     Key key,
@@ -37,13 +39,13 @@ class TextFieldWidget extends StatelessWidget {
                   counterText: "",
                   labelText: "email",
                   labelStyle: TextStyle(
-                    color: Colors.amber,
+                    color: logoColor,
                     letterSpacing: 5.0,
                   ),
                   prefixIcon: Icon(
                     FontAwesomeIcons.userAlt,
                     size: 25.0,
-                    color: Colors.amber,
+                    color: logoColor,
                   ),
                 ),
               ),
@@ -63,18 +65,18 @@ class TextFieldWidget extends StatelessWidget {
                   counterText: "",
                   labelText: "password",
                   labelStyle: TextStyle(
-                    color: Colors.amber,
+                    color: logoColor,
                     letterSpacing: 5.0,
                   ),
                   prefixIcon: Icon(
                     FontAwesomeIcons.lock,
                     size: 25.0,
-                    color: Colors.amber,
+                    color: logoColor,
                   ),
                   // suffixIcon: Icon(
                   //   FontAwesomeIcons.eye,
                   //   size: 25.0,
-                  //   color: Colors.amber,
+                  //   color: logoColor,
                   // ),
                   
                 ),

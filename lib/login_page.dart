@@ -5,8 +5,13 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopocus_task/arguments.dart';
 import 'package:shopocus_task/hello_widget.dart';
 import 'package:shopocus_task/text_field_widget.dart';
+
+import 'constants.dart';
+
+bool _isLoading = false;
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -38,6 +43,11 @@ Future<Map> checkUser(String email, String password) async {
 
 class _LoginPageState extends State<LoginPage> {
   Map _user;
+  @override
+  void dispose() {
+    _isLoading = false;
+    super.dispose();
+  }
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -46,31 +56,48 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: darkGreen,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             HelloWidget(),
-            TextFieldWidget(emailController: emailController, passwordController: passwordController),
+            TextFieldWidget(
+                emailController: emailController,
+                passwordController: passwordController),
             Expanded(
               flex: 3,
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text("Sign in",
-                        style: Theme.of(context).textTheme.headline3),
+                    LoadingIndicator(
+                      isLoading: _isLoading,
+                    ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    Text(
+                      "Sign In",
+                      style: TextStyle(
+                        fontSize: 40.0,
+                        color: logoColor,
+                        fontFamily: 'Blauer',
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: 60.0,
                         decoration: BoxDecoration(
-                          color: Colors.amber,
+                          color: logoColor,
                           borderRadius: BorderRadius.circular(22.0),
                         ),
                         child: IconButton(
                           onPressed: () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
                             final String email = emailController.text;
                             final String password = passwordController.text;
                             Map user;
@@ -78,7 +105,8 @@ class _LoginPageState extends State<LoginPage> {
                                 await DataConnectionChecker().hasConnection;
 
                             if (result) {
-                              user = await checkUser(email, password);
+                              user = await checkUser(
+                                  'abhishekedu4979@gmail.com', "Shopocus@123");
                             } else {
                               print('no internet connection');
                               Flushbar(
@@ -93,9 +121,13 @@ class _LoginPageState extends State<LoginPage> {
                             });
 
                             if (_user['message'] == "loggedIn") {
-                              Navigator.pushReplacementNamed(
-                                  context, '/second');
+                              Navigator.pushReplacementNamed(context, '/second',
+                                  arguments:
+                                      ScreenArguments(_user["user"]["name"]));
                             } else {
+                              setState(() {
+                                _isLoading = false;
+                              });
                               Flushbar(
                                 // title: 'Incorrect email/Password',
                                 message: 'Incorrect email/Password',
@@ -123,3 +155,24 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+class LoadingIndicator extends StatelessWidget {
+  const LoadingIndicator({
+    Key key,
+    @required this.isLoading,
+  }) : super(key: key);
+  final bool isLoading;
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: 100,
+      ),
+      child: Visibility(
+        visible: isLoading,
+        child: LinearProgressIndicator(
+          minHeight: 10.0,
+        ),
+      ),
+    );
+  }
+}

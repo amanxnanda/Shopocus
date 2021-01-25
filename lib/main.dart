@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopocus_task/constants.dart';
 import 'package:shopocus_task/welcome_page.dart';
 
 import 'login_page.dart';
@@ -7,8 +8,9 @@ void main() {
   runApp(MyApp());
 }
 
+
+
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,10 +24,9 @@ class MyApp extends StatelessWidget {
       },
       title: 'Shopocus',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
+        primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      
     );
   }
 }
