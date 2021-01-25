@@ -138,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                             final String email = emailController.text;
                             final String password = passwordController.text;
 
-                            final GenericModel user =
+                            final UserModel user =
                                 await checkUser(email, password);
 
                             setState(() {
