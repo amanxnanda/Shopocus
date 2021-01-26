@@ -55,13 +55,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       resizeToAvoidBottomPadding: false,
       backgroundColor: Color.fromARGB(255, 3, 4, 94),
       body: Stack(
         children: [
-          
-
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -123,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                                 final String email = emailController.text;
                                 final String password = passwordController.text;
                                 Map user;
+                                //Map user  = await checkUser(email, password);
                                 bool result =
                                     await DataConnectionChecker().hasConnection;
 
