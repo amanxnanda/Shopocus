@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'constants.dart';
@@ -12,6 +13,8 @@ class TextFieldWidget extends StatelessWidget {
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  // bool _emailEnable;
+  // bool _passEnable;
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +26,33 @@ class TextFieldWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TextField(
+              TextFormField(
                 controller: emailController,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 2.0,
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    gapPadding: 10.0,
+                  ),
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.teal,
-                        width: 20.0,
-                        style: BorderStyle.solid,
-                      ),
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(20.0)),
-                      gapPadding: 10.0),
+                    borderSide: BorderSide(
+                      color: Colors.teal,
+                      width: 20.0,
+                      style: BorderStyle.solid,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    gapPadding: 10.0,
+                  ),
                   counterText: "",
                   labelText: "email",
                   labelStyle: TextStyle(
@@ -51,17 +68,32 @@ class TextFieldWidget extends StatelessWidget {
               ),
               TextField(
                 controller: passwordController,
-                //textAlign: TextAlign.center,
+                obscureText: true,
+                keyboardType: TextInputType.visiblePassword,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
                 decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 2.0,
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    gapPadding: 10.0,
+                  ),
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.teal,
-                        width: 20.0,
-                        style: BorderStyle.solid,
-                      ),
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(20.0)),
-                      gapPadding: 10.0),
+                    borderSide: BorderSide(
+                      color: Colors.teal,
+                      width: 20.0,
+                      style: BorderStyle.solid,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    gapPadding: 10.0,
+                  ),
                   counterText: "",
                   labelText: "password",
                   labelStyle: TextStyle(
@@ -73,15 +105,7 @@ class TextFieldWidget extends StatelessWidget {
                     size: 25.0,
                     color: logoColor,
                   ),
-                  // suffixIcon: Icon(
-                  //   FontAwesomeIcons.eye,
-                  //   size: 25.0,
-                  //   color: logoColor,
-                  // ),
-                  
                 ),
-                
-
               ),
             ],
           ),
@@ -90,4 +114,3 @@ class TextFieldWidget extends StatelessWidget {
     );
   }
 }
-

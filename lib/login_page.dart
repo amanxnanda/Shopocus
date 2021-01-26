@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:ui';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -55,101 +55,126 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       resizeToAvoidBottomPadding: false,
-      backgroundColor: darkGreen,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            HelloWidget(),
-            TextFieldWidget(
-                emailController: emailController,
-                passwordController: passwordController),
-            Expanded(
-              flex: 3,
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    LoadingIndicator(
-                      isLoading: _isLoading,
-                    ),
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                    Text(
-                      "Sign In",
-                      style: TextStyle(
-                        fontSize: 40.0,
-                        color: logoColor,
-                        fontFamily: 'Blauer',
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: 60.0,
-                        decoration: BoxDecoration(
-                          color: logoColor,
-                          borderRadius: BorderRadius.circular(22.0),
-                        ),
-                        child: IconButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            final String email = emailController.text;
-                            final String password = passwordController.text;
-                            Map user;
-                            bool result =
-                                await DataConnectionChecker().hasConnection;
+      backgroundColor: Color.fromARGB(255, 3, 4, 94),
+      body: Stack(
+        children: [
+          
 
-                            if (result) {
-                              user = await checkUser(
-                                  'abhishekedu4979@gmail.com', "Shopocus@123");
-                            } else {
-                              print('no internet connection');
-                              Flushbar(
-                                title: 'No Internet connection',
-                                message: 'No Internet connection',
-                                duration: Duration(seconds: 2),
-                              )..show(context);
-                            }
-
-                            setState(() {
-                              _user = user;
-                            });
-
-                            if (_user['message'] == "loggedIn") {
-                              Navigator.pushReplacementNamed(context, '/second',
-                                  arguments:
-                                      ScreenArguments(_user["user"]["name"]));
-                            } else {
-                              setState(() {
-                                _isLoading = false;
-                              });
-                              Flushbar(
-                                // title: 'Incorrect email/Password',
-                                message: 'Incorrect email/Password',
-                                duration: Duration(seconds: 2),
-                              )..show(context);
-                            }
-                            print(_user['message']);
-                          },
-                          color: Colors.white,
-                          focusColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          icon: Icon(FontAwesomeIcons.arrowRight),
-                        ),
-                      ),
-                    ),
-                    //_user == null ? Container() : Text('${_user.user.name}'),
-                  ],
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/shopping.jpg',
                 ),
+                fit: BoxFit.cover,
               ),
             ),
-          ],
-        ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+              child: new Container(
+                decoration: new BoxDecoration(
+                    color: Color.fromARGB(255, 3, 4, 94).withOpacity(0.3)),
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                HelloWidget(),
+                TextFieldWidget(
+                    emailController: emailController,
+                    passwordController: passwordController),
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        LoadingIndicator(
+                          isLoading: _isLoading,
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        Text(
+                          "Sign In",
+                          style: TextStyle(
+                            fontSize: 40.0,
+                            color: logoColor,
+                            fontFamily: 'Blauer',
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 60.0,
+                            decoration: BoxDecoration(
+                              color: logoColor,
+                              borderRadius: BorderRadius.circular(22.0),
+                            ),
+                            child: IconButton(
+                              onPressed: () async {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                final String email = emailController.text;
+                                final String password = passwordController.text;
+                                Map user;
+                                bool result =
+                                    await DataConnectionChecker().hasConnection;
+
+                                if (result) {
+                                  // user = await checkUser(
+                                  //     'abhishekedu4979@gmail.com', "Shopocus@123");
+                                  user = await checkUser(email, password);
+                                } else {
+                                  print('no internet connection');
+                                  Flushbar(
+                                    title: 'No Internet connection',
+                                    message: 'No Internet connection',
+                                    duration: Duration(seconds: 2),
+                                  )..show(context);
+                                }
+
+                                setState(() {
+                                  _user = user;
+                                });
+
+                                if (_user['message'] == "loggedIn") {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/second',
+                                      arguments: ScreenArguments(
+                                          _user["user"]["name"]));
+                                } else {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  Flushbar(
+                                    // title: 'Incorrect email/Password',
+                                    message: 'Incorrect email/Password',
+                                    duration: Duration(seconds: 2),
+                                  )..show(context);
+                                }
+                                print(_user['message']);
+                              },
+                              color: Colors.white,
+                              focusColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              icon: Icon(FontAwesomeIcons.arrowRight),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

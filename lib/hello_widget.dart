@@ -11,7 +11,7 @@ class HelloWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 3,
+      flex: 2,
       child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
