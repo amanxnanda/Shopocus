@@ -13,8 +13,6 @@ class TextFieldWidget extends StatelessWidget {
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  // bool _emailEnable;
-  // bool _passEnable;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +64,7 @@ class TextFieldWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              TextField(
+              TextFormField(
                 controller: passwordController,
                 obscureText: true,
                 keyboardType: TextInputType.visiblePassword,
@@ -107,6 +105,7 @@ class TextFieldWidget extends StatelessWidget {
                   ),
                 ),
               ),
+              
             ],
           ),
         ),

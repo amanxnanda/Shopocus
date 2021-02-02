@@ -19,8 +19,7 @@ class HelloWidget extends StatelessWidget {
           children: [
             Container(
               child: TyperAnimatedTextKit(
-                
-                text: ['SHOPOCUS'],
+                text: ['PRANAVA'],
                 speed: Duration(milliseconds: 100),
                 textAlign: TextAlign.center,
                 textStyle: TextStyle(

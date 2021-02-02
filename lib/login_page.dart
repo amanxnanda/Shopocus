@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
               child: new Container(
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                     color: Color.fromARGB(255, 3, 4, 94).withOpacity(0.3)),
               ),
             ),
@@ -82,8 +82,9 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 HelloWidget(),
                 TextFieldWidget(
-                    emailController: emailController,
-                    passwordController: passwordController),
+                  emailController: emailController,
+                  passwordController: passwordController,
+                ),
                 Expanded(
                   flex: 3,
                   child: Container(
